@@ -180,7 +180,7 @@ void game_mode_apply_ioprio(const GameModeContext *self, const pid_t client, int
  * scheduling.
  */
 int game_mode_get_renice(const pid_t client);
-void game_mode_apply_renice(const GameModeContext *self, const pid_t client, int expected);
+void game_mode_apply_renice(const GameModeContext *self, const pid_t client, char restore);
 void game_mode_apply_scheduling(const GameModeContext *self, const pid_t client);
 
 /** gamemode-wine.c
