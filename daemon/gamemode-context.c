@@ -513,7 +513,7 @@ GameModeClient *game_mode_context_lookup_client(GameModeContext *self, pid_t cli
 static int game_mode_apply_client_optimisations(GameModeContext *self, pid_t client)
 {
 	/* Store current renice and apply */
-	game_mode_apply_renice(self, client, 4 /* expect zero value to start with, adjusted to 4 */);
+	game_mode_apply_renice(self, client, -4 /* expect zero value to start with, adjusted to -4 */);
 
 	/* Store current ioprio value and apply  */
 	game_mode_apply_ioprio(self, client, IOPRIO_DEFAULT);
