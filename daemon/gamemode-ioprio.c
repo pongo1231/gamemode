@@ -111,12 +111,8 @@ int game_mode_get_ioprio(const pid_t client)
  * and can possibly reduce lags or latency when a game has to load assets
  * on demand.
  */
-void game_mode_apply_ioprio(const GameModeContext *self, const pid_t client, int expected)
+void game_mode_apply_ioprio(const GameModeContext *self, const pid_t client, char restore)
 {
-	if (expected == IOPRIO_DONT_SET)
-		/* Silently bail if fed a don't set (invalid) */
-		return;
-
 	GameModeConfig *config = game_mode_config_from_context(self);
 
 	/* read configuration "ioprio" (0..7) */
@@ -128,9 +124,7 @@ void game_mode_apply_ioprio(const GameModeContext *self, const pid_t client, int
 
 	LOG_MSG("Setting ioprio value...\n");
 
-	/* If fed the default, we'll try and reset the value back */
-	if (expected != IOPRIO_DEFAULT) {
-		expected = (int)ioprio;
+	if (restore) {
 		ioprio = IOPRIO_DEFAULT;
 	}
 
@@ -160,13 +154,6 @@ void game_mode_apply_ioprio(const GameModeContext *self, const pid_t client, int
 			 * This could simply mean that the thread exited before fetching the ioprio
 			 * So we should continue
 			 */
-		} else if (current != expected) {
-			/* Don't try and adjust the ioprio value if the value we got doesn't match default */
-			LOG_ERROR("Skipping ioprio on client [%d,%d]: ioprio was (%d) but we expected (%d)\n",
-			          client,
-			          tid,
-			          current,
-			          expected);
 		} else {
 			/*
 			 * For now we only support IOPRIO_CLASS_BE

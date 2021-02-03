@@ -516,7 +516,7 @@ static int game_mode_apply_client_optimisations(GameModeContext *self, pid_t cli
 	game_mode_apply_renice(self, client, 0);
 
 	/* Store current ioprio value and apply  */
-	game_mode_apply_ioprio(self, client, IOPRIO_DEFAULT);
+	game_mode_apply_ioprio(self, client, 0);
 
 	/* Apply scheduler policies */
 	game_mode_apply_scheduling(self, client);
@@ -628,7 +628,7 @@ error_cleanup:
 static int game_mode_remove_client_optimisations(GameModeContext *self, pid_t client)
 {
 	/* Restore the ioprio value for the process, expecting it to be the config value  */
-	game_mode_apply_ioprio(self, client, (int)config_get_ioprio_value(self->config));
+	game_mode_apply_ioprio(self, client, 1);
 
 	/* Restore the renice value for the process, expecting it to be our config value */
 	game_mode_apply_renice(self, client, 1);

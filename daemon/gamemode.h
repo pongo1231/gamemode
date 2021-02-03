@@ -173,7 +173,7 @@ int game_mode_reload_config(GameModeContext *context);
  * IO priorities.
  */
 int game_mode_get_ioprio(const pid_t client);
-void game_mode_apply_ioprio(const GameModeContext *self, const pid_t client, int expected);
+void game_mode_apply_ioprio(const GameModeContext *self, const pid_t client, char restore);
 
 /** gamemode-sched.c
  * Provides internal API functions specific to adjusting process
