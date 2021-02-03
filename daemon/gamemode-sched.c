@@ -68,13 +68,8 @@ int game_mode_get_renice(const pid_t client)
 	return -priority;
 }
 
-/* If expected is 0 then we try to apply our renice, otherwise, we try to remove it */
-void game_mode_apply_renice(const GameModeContext *self, const pid_t client, int expected)
+void game_mode_apply_renice(const GameModeContext *self, const pid_t client, char restore)
 {
-	if (expected == RENICE_INVALID)
-		/* Silently bail if fed an invalid value */
-		return;
-
 	GameModeConfig *config = game_mode_config_from_context(self);
 
 	/*
@@ -88,10 +83,7 @@ void game_mode_apply_renice(const GameModeContext *self, const pid_t client, int
 	/* Invert the renice value */
 	renice = -renice;
 
-	/* When expected is non-zero, we should try and remove the renice only if it doesn't match the
-	 * expected value */
-	if (expected != 0) {
-		expected = (int)renice;
+	if (restore) {
 		renice = 0;
 	}
 
@@ -125,16 +117,6 @@ void game_mode_apply_renice(const GameModeContext *self, const pid_t client, int
 			          client,
 			          tid,
 			          strerror(errno));
-		} else if (prio != expected) {
-			/*
-			 * Don't adjust priority if it does not match the expected value
-			 * ie. Another process has changed it, or it began non-standard
-			 */
-			LOG_ERROR("Refused to renice client [%d,%d]: prio was (%d) but we expected (%d)\n",
-			          client,
-			          tid,
-			          prio,
-			          expected);
 		} else if (setpriority(PRIO_PROCESS, (id_t)tid, (int)renice)) {
 			LOG_HINTED(ERROR,
 			           "Failed to renice client [%d,%d], ignoring error condition: %s\n",
