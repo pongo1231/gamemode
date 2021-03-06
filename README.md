@@ -107,12 +107,12 @@ ACCEPT_KEYWORDS="**" emerge --ask ~games-util/gamemode-9999
 ```
 
 ### Build and Install GameMode
-Then clone, build and install a release version of GameMode at 1.6:
+Then clone, build and install a release version of GameMode at 1.6.1:
 
 ```bash
 git clone https://github.com/FeralInteractive/gamemode.git
 cd gamemode
-git checkout 1.6 # omit to build the master branch
+git checkout 1.6.1 # omit to build the master branch
 ./bootstrap.sh
 ```
 
@@ -136,7 +136,7 @@ See the [contributors](https://github.com/FeralInteractive/gamemode/graphs/contr
 ---
 ## License
 
-Copyright © 2017-2020 Feral Interactive
+Copyright © 2017-2021 Feral Interactive
 
 GameMode is available under the terms of the BSD 3-Clause License (Revised)
 
